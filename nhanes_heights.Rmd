@@ -1,0 +1,59 @@
+---
+title: "US Adult Heights"
+output: html_document
+date: '2022-06-17'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+library(primer.data)
+library(tidyverse)
+```
+
+<!-- Always explore the data. -->
+
+<!-- glimpse(nhanes) -->
+<!-- view(nhanes) -->
+<!-- summary(nhanes) -->
+<!-- ?nhanes -->
+
+<!-- Calculate some numbers which may prove valuable later -->
+
+<!-- nhanes$height -->
+<!-- mean(nhanes$height) -->
+<!-- mean(nhanes$height, na.rm = TRUE) -->
+<!-- nhanes |>  -->
+<!--   group_by(gender) |>  -->
+<!--   summarize(avg_height = mean(height, na.rm = TRUE)) -->
+
+<!-- Notes: -->
+
+<!-- Might want to drop_na() to deal with missing values. -->
+<!-- Or warning = FALSE.  -->
+<!-- Have we introduced code chunk options yet? Add this to the Rstudio and Friends tutorial. -->
+
+
+
+```{r, warning=FALSE}
+nhanes |> 
+  filter(age >= 18) |> 
+  ggplot(aes(x = height, fill = gender)) +
+    geom_histogram(binwidth = 1) +
+    facet_wrap(~gender) +
+    labs(x = "Height in Centimters",
+         y = "Number of observations",
+         title = "Adult Height in the United States",
+         subtitle = "Men are, on average, 10 cm taller than women",
+         caption = "Data from the National Health and Nutrition Examination Survey")
+```
+```{r, warning=FALSE}
+nhanes |> 
+  filter(age >= 18) |> 
+  ggplot(aes(x = height, color = gender)) +
+    geom_density() +
+    labs(x = "Height in Centimters",
+         y = NULL,
+         title = "Adult Height in the United States",
+         subtitle = "Men are, on average, 10 cm taller than women",
+         caption = "Data from the National Health and Nutrition Examination Survey")
+```
