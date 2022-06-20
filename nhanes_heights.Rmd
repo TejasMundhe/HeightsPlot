@@ -8,6 +8,7 @@ date: '2022-06-17'
 knitr::opts_chunk$set(echo = FALSE)
 library(primer.data)
 library(tidyverse)
+library(ggthemes)
 ```
 
 <!-- Always explore the data. -->
@@ -40,20 +41,45 @@ nhanes |>
   ggplot(aes(x = height, fill = gender)) +
     geom_histogram(binwidth = 1) +
     facet_wrap(~gender) +
+    theme_clean() +
     labs(x = "Height in Centimters",
          y = "Number of observations",
          title = "Adult Height in the United States",
          subtitle = "Men are, on average, 10 cm taller than women",
-         caption = "Data from the National Health and Nutrition Examination Survey")
+         caption = "Data from the National Health and Nutrition Examination Survey",
+         fill = "Gender")
 ```
+
+```{r, warning=FALSE}
+nhanes|>
+mutate(weight = weight/2.2, height = height/30.48)|>
+select(gender, weight, height, bmi) |>
+drop_na(weight, height) |>
+ggplot(mapping = aes(x = weight, y = height, color = bmi)) +
+geom_jitter() +
+geom_smooth(formula = y~x, method = "loess", se = FALSE) + 
+facet_wrap(~gender) + 
+theme_clean() +
+labs(title = "Height Versus Weight in the US",
+subtitle = "Associatin between weight and height is more positive for heavy men",
+x = "Weight (pounds)",
+y = "Height (feet)",
+caption = "Source: National Health and Examination Survey",
+color = "BMI")
+```
+
 ```{r, warning=FALSE}
 nhanes |> 
   filter(age >= 18) |> 
   ggplot(aes(x = height, color = gender)) +
     geom_density() +
+    theme_clean() +
     labs(x = "Height in Centimters",
          y = NULL,
          title = "Adult Height in the United States",
          subtitle = "Men are, on average, 10 cm taller than women",
-         caption = "Data from the National Health and Nutrition Examination Survey")
+         caption = "Data from the National Health and Nutrition Examination Survey",
+         color = "Gender")
 ```
+
+
